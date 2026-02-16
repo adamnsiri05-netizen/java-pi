@@ -1,0 +1,103 @@
+/* General Root Styling */
+.root {
+    -fx-background-color: #0F0F0F;
+    -fx-font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Sidebar & Lists */
+.list-view {
+    -fx-background-color: #1A1A1A;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2D2D;
+    -fx-border-radius: 12;
+    -fx-padding: 5;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E0E0E0;
+    -fx-padding: 12;
+    -fx-background-radius: 8;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #2D2D2D;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #2563EB; /* Modern Blue */
+    -fx-text-fill: white;
+}
+
+/* Chat Bubbles Container */
+#messageListView .list-cell {
+    -fx-padding: 4 10;
+}
+
+/* Custom Message Bubble Styles */
+.bubble {
+    -fx-padding: 10 15;
+    -fx-background-radius: 18;
+    -fx-max-width: 400;
+}
+
+.bubble-me {
+    -fx-background-color: #2563EB;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.bubble-other {
+    -fx-background-color: #2D2D2D;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Input Field */
+.text-field {
+    -fx-background-color: #1A1A1A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #6B7280;
+    -fx-background-radius: 24;
+    -fx-border-radius: 24;
+    -fx-border-color: #2D2D2D;
+    -fx-padding: 10 18;
+}
+
+.text-field:focused {
+    -fx-border-color: #2563EB;
+}
+
+/* Action Buttons */
+.button {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-background-radius: 24;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.button:hover { -fx-background-color: #3B82F6; }
+
+/* The small "+" button in chat */
+.plus-button {
+    -fx-background-color: #333333;
+    -fx-background-radius: 50%;
+    -fx-min-width: 24;
+    -fx-min-height: 24;
+    -fx-max-width: 24;
+    -fx-max-height: 24;
+    -fx-padding: 0;
+}
+
+/* Message text color */
+.message-text {
+    -fx-text-fill: white;
+}
+
+/* Ensure bubble text contrast for other/sent */
+.bubble-me .message-text {
+    -fx-text-fill: white;
+}
+.bubble-other .message-text {
+    -fx-text-fill: white;
+}
