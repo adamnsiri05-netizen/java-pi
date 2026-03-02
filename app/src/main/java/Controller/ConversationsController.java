@@ -6,6 +6,7 @@ import Models.Conversation;
 import Services.ServiceUser;
 import Services.ServiceMessage;
 import Services.ServiceConversation;
+import utils.TranslationService;
 import Services.ServiceReport;
 import Services.ServiceUser;
 import javafx.collections.FXCollections;
@@ -43,10 +44,15 @@ public class ConversationsController {
     private int currentConversationId = -1;
     private List<User> allUsers;
     private List<User> usersWithConversations;
+    private String targetLanguage = "en"; // default
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
         initialize();
+    }
+
+    public void setTargetLanguage(String lang) {
+        if (lang != null) this.targetLanguage = lang;
     }
 
     @FXML
@@ -115,6 +121,11 @@ public class ConversationsController {
         }
 
         List<Message> messages = serviceMessage.getMessagesByConversation(currentConversationId);
+        // translate each message before displaying
+        for (Message m : messages) {
+            String translated = utils.TranslationService.translate(m.getContenuMessage(), "en", targetLanguage);
+            m.setContenuMessage(translated);
+        }
         messageListView.setItems(FXCollections.observableArrayList(messages));
         messageListView.scrollTo(messages.size() - 1);
     }

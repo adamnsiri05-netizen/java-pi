@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class UserSelectionController {
 
     @FXML private ListView<String> userListView;
+    @FXML private ComboBox<String> langCombo;
 
     private final ServiceUser serviceUser = new ServiceUser();
     private List<User> users;
@@ -23,6 +25,10 @@ public class UserSelectionController {
     @FXML
     public void initialize() {
         loadUsers();
+        // populate languages
+        langCombo.setItems(FXCollections.observableArrayList(
+                "en", "zh", "es", "fr", "de", "ja", "ko", "ru"));
+        langCombo.getSelectionModel().selectFirst();
     }
 
     private void loadUsers() {
@@ -52,6 +58,7 @@ public class UserSelectionController {
             
             ConversationsController controller = loader.getController();
             controller.setCurrentUser(selectedUser);
+            controller.setTargetLanguage(langCombo.getSelectionModel().getSelectedItem());
             
             Scene scene = new Scene(root);
             String css = getClass().getResource("/org.example/styles.css").toExternalForm();
