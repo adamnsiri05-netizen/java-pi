@@ -80,6 +80,49 @@ public class ConversationRepository {
         }
     }
 
+    public List<Conversation> findConversationsByUserPair(int userId1, int userId2) {
+        String sql = "SELECT DISTINCT c.* FROM conversation c " +
+                "INNER JOIN conversation_participants cp1 ON c.id_conversation = cp1.id_conversation " +
+                "INNER JOIN conversation_participants cp2 ON c.id_conversation = cp2.id_conversation " +
+                "WHERE (cp1.id_user = ? AND cp2.id_user = ?) " +
+                "OR (cp1.id_user = ? AND cp2.id_user = ?)";
+        List<Conversation> conversations = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userId1);
+            ps.setInt(2, userId2);
+            ps.setInt(3, userId2);
+            ps.setInt(4, userId1);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                conversations.add(mapResultSetToConversation(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return conversations;
+    }
+
+    public void addParticipant(int conversationId, int userId) {
+        String sql = "INSERT IGNORE INTO conversation_participants (id_conversation, id_user) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, conversationId);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteParticipants(int conversationId) {
+        String sql = "DELETE FROM conversation_participants WHERE id_conversation = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, conversationId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Conversation mapResultSetToConversation(ResultSet rs) throws SQLException {
         Conversation conv = new Conversation();
         conv.setIdConversation(rs.getInt("id_conversation"));

@@ -76,6 +76,27 @@ public class MessageRepository {
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
+    public void deleteByConversationId(int conversationId) {
+        String sql = "DELETE FROM message WHERE id_conversation = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, conversationId);
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public List<Message> findByConversationId(int conversationId) {
+        String sql = "SELECT * FROM message WHERE id_conversation = ? ORDER BY date_message ASC";
+        List<Message> messages = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, conversationId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                messages.add(mapResultSetToMessage(rs));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return messages;
+    }
+
     /**
      * Helper method to map a ResultSet row to a Message object.
      */

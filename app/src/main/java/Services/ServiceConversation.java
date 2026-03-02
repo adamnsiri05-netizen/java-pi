@@ -2,16 +2,19 @@ package Services;
 
 import Models.Conversation;
 import Repository.ConversationRepository;
+import Repository.MessageRepository;
 import java.util.List;
 
 public class ServiceConversation implements InterfaceConversation {
 
     // Dependency on the Repository
     private final ConversationRepository conversationRepository;
+    private final MessageRepository messageRepository;
 
     public ServiceConversation() {
         // Direct instantiation of the repository
         this.conversationRepository = new ConversationRepository();
+        this.messageRepository = new MessageRepository();
     }
 
     @Override
@@ -40,7 +43,19 @@ public class ServiceConversation implements InterfaceConversation {
 
     @Override
     public void deleteConversation(int id) {
-        // Delegate deletion to the repository
+        // Delete all messages in the conversation first
+        messageRepository.deleteByConversationId(id);
+        // Delete all participants
+        conversationRepository.deleteParticipants(id);
+        // Then delete the conversation
         conversationRepository.delete(id);
+    }
+
+    public List<Conversation> getConversationsBetweenUsers(int userId1, int userId2) {
+        return conversationRepository.findConversationsByUserPair(userId1, userId2);
+    }
+
+    public void addParticipant(int conversationId, int userId) {
+        conversationRepository.addParticipant(conversationId, userId);
     }
 }

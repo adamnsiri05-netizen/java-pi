@@ -5,11 +5,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utils.DatabaseLoader;
 
 public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org.example/main_view.fxml"));
+        // Initialize database schema
+        DatabaseLoader.initializeDatabase();
+        
+        // Load sample data
+        DatabaseLoader.loadSampleData();
+        
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org.example/user_selection_view.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         // Load CSS stylesheet programmatically (resource in same package)

@@ -116,6 +116,16 @@ public class MainController {
      */
     private void setupMessageContextMenu(Button button, Message item) {
         button.setOnAction(e -> {
+            // Only allow editing/deleting if current user is the sender
+            if (item.getIdExpediteur() != currentUserId) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Permission Denied");
+                alert.setHeaderText(null);
+                alert.setContentText("You can only modify your own messages.");
+                alert.showAndWait();
+                return;
+            }
+
             ContextMenu cm = new ContextMenu();
             MenuItem edit = new MenuItem("Modifier");
             MenuItem del = new MenuItem("Supprimer");
